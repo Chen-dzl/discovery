@@ -54,8 +54,19 @@ int main() {
 		temp_b = f(Ma[i] - dMa, A[i]);
 		//Iterative solution
 		while (abs(temp) > 1e-13) {
+			double dMa_b, dMa_f;
 			temp_f = f(Ma[i] + dMa, A[i]);
+			dMa_b = -temp * dMa / (temp - temp_b);
+			dMa_f = -temp * dMa / (temp_f - temp);
 			dMa = -2 * temp * dMa / (temp_f - temp_b);
+			if (abs(dMa_b) < abs(dMa))
+			{
+				dMa = dMa_b;
+			}
+			if (abs(dMa_f) < abs(dMa))
+			{
+				dMa = dMa_f;
+			}
 			Ma[i] = Ma[i] + dMa;//Ma_New-dMa_New=Ma
 			temp_b = temp;//temp_b_New=f(Ma_New-dMa_New,A)=f(Ma,A)=temp
 			temp = f(Ma[i], A[i]);
