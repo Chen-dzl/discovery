@@ -56,8 +56,8 @@ int main() {
 		while (abs(temp) > 1e-13) {
 			temp_f = f(Ma[i] + dMa, A[i]);
 			dMa = -2 * temp * dMa / (temp_f - temp_b);
-			Ma[i] = Ma[i] + dMa;//Ma_New-dMa=Ma
-			temp_b = temp;//temp_b=f(Ma_New-dMa,A)=f(Ma,A)=temp
+			Ma[i] = Ma[i] + dMa;//Ma_New-dMa_New=Ma
+			temp_b = temp;//temp_b_New=f(Ma_New-dMa_New,A)=f(Ma,A)=temp
 			temp = f(Ma[i], A[i]);
 		}
 		outFile << setw(8) << x[i] << setw(16) << Ma[i] << setw(18) << temp << "\n";
