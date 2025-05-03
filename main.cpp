@@ -17,8 +17,7 @@ double f(double Ma, double A) {
 	{
 		return 1.0;
 	}
-	double Ma2 = pow(Ma, 2);
-	double temp = pow(2 / G_add * (1 + G_subtract / 2 * Ma2), G_add / G_subtract) / Ma2 - pow(A, 2);
+	double temp = pow(2 / G_add * (1 + G_subtract / 2 * pow(Ma, 2)), G_add / G_subtract/2) / Ma - A;
 	return temp;
 }
 
@@ -36,13 +35,9 @@ int main() {
 	{
 		x[i] = dx * i;
 		A[i] = 1 + 2.2 * pow(x[i] - 1.5, 2);
-		if (i < (N - 1) / 2)
+		if (i > (N - 1) / 2)
 		{
-			Ma[i] = 0.2;
-		}
-		else
-		{
-			Ma[i] = 4.0;
+			Ma[i] = 2.0;
 		}
 	}
 	/*
