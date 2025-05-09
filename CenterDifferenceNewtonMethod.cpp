@@ -57,7 +57,7 @@ void ForwardDifference(vector<double> Ma) {
 		R += abs(temp);
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(5) << 2 * j << setw(18) << R / N << endl;
+	cout << "ForwardDifference:" << setw(5) << 2 * j << setw(18) << R / N << endl;
 }
 
 void CenterDifference(vector<double> Ma) {
@@ -89,7 +89,7 @@ void CenterDifference(vector<double> Ma) {
 		R += abs(temp);
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(5) << 2 * j << setw(18) << R / N << endl;
+	cout << "CenterDifference:" << setw(5) << 2 * j << setw(18) << R / N << endl;
 }
 
 void BackwardDifference(vector<double> Ma) {
@@ -120,7 +120,7 @@ void BackwardDifference(vector<double> Ma) {
 		R += abs(temp);
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(5) << j << setw(18) << R / N << endl;
+	cout << "BackwardDifference:" << setw(5) << j << setw(18) << R / N << endl;
 }
 
 int main() {
