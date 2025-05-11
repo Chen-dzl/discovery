@@ -98,7 +98,7 @@ void BackwardDifference(vector<double> Ma) {
 	for (int i = 0; i < N; i++)
 	{
 		double temp = f(i, Ma[i]);
-		double temp_b, temp_f;
+		double temp_b;
 		double dMa = stepL;
 		temp_b = f(i, Ma[i] - dMa);
 		//Iterative solution
