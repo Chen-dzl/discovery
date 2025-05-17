@@ -32,7 +32,7 @@ double f(const int i, double Ma) {
 
 void ForwardDifference(vector<double> Ma) {
 	int j = 0;//The number of times the iterative process calculates the function(f)
-	double R = 0;//residual sum
+	cout << "********************************************" << endl;
 	for (int i = 0; i < N; i++)
 	{
 		double temp = f(i, Ma[i]);
@@ -54,15 +54,16 @@ void ForwardDifference(vector<double> Ma) {
 			temp = f(i, Ma[i]);
 			++j;
 		}
-		R += abs(temp);
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << "ForwardDifference:" << setw(5) << 2 * j << setw(18) << R / N << endl;
+	cout << setw(8) << "Method" << setw(16) << "Num of f ope" << endl;
+	cout << setw(8) << "FD:" << setw(16) << 2 * j << endl;
+	cout << "********************************************" << endl;
 }
 
 void CenterDifference(vector<double> Ma) {
 	int j = 0;//The number of times the iterative process calculates the function(f)
-	double R = 0;//residual sum
+	cout << "********************************************" << endl;
 	for (int i = 0; i < N; i++)
 	{
 		double temp = f(i, Ma[i]);
@@ -70,7 +71,7 @@ void CenterDifference(vector<double> Ma) {
 		double dMa = stepL;
 		temp_b = f(i, Ma[i] - dMa);
 		//Iterative solution
-		while (abs(temp) > 1e-13) {
+		while (abs(temp) > residual) {
 			temp_f = f(i, Ma[i] + dMa);
 			dMa = -temp * 2 * dMa / (temp_f - temp_b);
 			if (abs(dMa) < residual)
@@ -86,15 +87,16 @@ void CenterDifference(vector<double> Ma) {
 			temp = f(i, Ma[i]);
 			++j;
 		}
-		R += abs(temp);
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << "CenterDifference:" << setw(5) << 2 * j << setw(18) << R / N << endl;
+	cout << setw(8) << "Method" << setw(16) << "Num of f ope" << endl;
+	cout << setw(8) << "CD:" << setw(16) << 2 * j << endl;
+	cout << "********************************************" << endl;
 }
 
 void BackwardDifference(vector<double> Ma) {
 	int j = 0;//The number of times the iterative process calculates the function(f)
-	double R = 0;//residual sum
+	cout << "********************************************" << endl;
 	for (int i = 0; i < N; i++)
 	{
 		double temp = f(i, Ma[i]);
@@ -102,7 +104,7 @@ void BackwardDifference(vector<double> Ma) {
 		double dMa = stepL;
 		temp_b = f(i, Ma[i] - dMa);
 		//Iterative solution
-		while (abs(temp) > 1e-13) {
+		while (abs(temp) > residual) {
 			dMa = -temp * dMa / (temp - temp_b);
 			if (abs(dMa) < residual)
 			{
@@ -117,10 +119,101 @@ void BackwardDifference(vector<double> Ma) {
 			temp = f(i, Ma[i]);
 			++j;
 		}
-		R += abs(temp);
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << "BackwardDifference:" << setw(5) << j << setw(18) << R / N << endl;
+	cout << setw(8) << "Method" << setw(16) << "Num of f ope" << endl;
+	cout << setw(8) << "BD:" << setw(16) << j << endl;
+	cout << "********************************************" << endl;
+}
+
+void CFD(vector<double> Ma) {
+	int j = 0;//The number of times the iterative process calculates the function(f)
+	int maxB;
+	cout << "********************************************" << endl;
+	for (int i = 0; i < N; i++)
+	{
+		double temp = f(i, Ma[i]);
+		maxB = static_cast<int>(std::round(log(abs(temp)) - log(residual)));
+		double temp_b, temp_f;
+		double dMa = stepL;
+		temp_b = f(i, Ma[i] - dMa);
+		//Iterative solution
+		int p = 0;
+		while (abs(temp) > residual) {
+			temp_f = f(i, Ma[i] + dMa);
+			if (p < maxB)
+			{
+				dMa = -temp * 2 * dMa / (temp_f - temp_b);
+			}
+			else
+			{
+				dMa = -temp * dMa / (temp_f - temp);
+			}
+			if (abs(dMa) < residual)
+			{
+				dMa = residual;
+			}
+			if (abs(dMa) > 1 / residual)
+			{
+				dMa = stepL;
+			}
+			Ma[i] = Ma[i] + dMa;//Ma_New=Ma+dMa_New
+			temp_b = temp;//temp_b_New=f(Ma_New-dMa_New,A)=f(Ma,A)=temp
+			temp = f(i, Ma[i]);
+			++j;
+			++p;
+		}
+		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << setw(18) << maxB << endl;
+	}
+	cout << setw(8) << "Method" << setw(16) << "Num of f ope" << endl;
+	cout << setw(8) << "CFD:" << setw(16) << 2 * j << endl;
+	cout << "********************************************" << endl;
+}
+
+void BFD(vector<double> Ma) {
+	int j = 0;//The number of times the iterative process calculates the function(f)
+	int k = 0;
+	int maxB;
+	cout << "********************************************" << endl;
+	for (int i = 0; i < N; i++)
+	{
+		double temp = f(i, Ma[i]);
+		maxB = static_cast<int>(std::round(log(abs(temp)) - log(residual)));
+		double temp_b;
+		double dMa = stepL;
+		temp_b = f(i, Ma[i] - dMa);
+		//Iterative solution
+		int p = 0;
+		while (abs(temp) > residual) {
+			if (p < maxB)
+			{
+				dMa = -temp * dMa / (temp - temp_b);
+			}
+			else
+			{
+				double temp_f = f(i, Ma[i] + dMa);
+				dMa = -temp * dMa / (temp_f - temp);
+				++k;
+			}
+			if (abs(dMa) < residual)
+			{
+				dMa = residual;
+			}
+			if (abs(dMa) > 1 / residual)
+			{
+				dMa = stepL;
+			}
+			Ma[i] = Ma[i] + dMa;//Ma_New=Ma+dMa_New
+			temp_b = temp;//temp_b_New=f(Ma_New-dMa_New,A)=f(Ma,A)=temp
+			temp = f(i, Ma[i]);
+			++j;
+			++p;
+		}
+		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << setw(18) << maxB << endl;
+	}
+	cout << setw(8) << "Method" << setw(16) << "Num of f ope" << setw(20) << "Num of f(x+dx) ope" << endl;
+	cout << setw(8) << "BFD:" << setw(16) << j + k << setw(20) << k << endl;
+	cout << "********************************************" << endl;
 }
 
 int main() {
@@ -143,10 +236,13 @@ int main() {
 		}
 	}*/
 
+	cout << setw(8) << "x" << setw(16) << "Ma" << setw(18) << "temp" << endl;
 	//Iterative solution
 	ForwardDifference(Ma);
 	CenterDifference(Ma);
 	BackwardDifference(Ma);
+	CFD(Ma);
+	BFD(Ma);
 
 	return 0;
 }
