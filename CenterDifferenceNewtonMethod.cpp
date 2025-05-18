@@ -56,7 +56,7 @@ void ForwardDifference(vector<double> Ma) {
 		}
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(8) << "Method" << setw(16) << "Num of f" << endl;
+	cout << setw(8) << "Method" << setw(16) << "Times of f" << endl;
 	cout << setw(8) << "FD:" << setw(16) << 2 * j << endl;
 	cout << "********************************************" << endl;
 }
@@ -89,7 +89,7 @@ void CenterDifference(vector<double> Ma) {
 		}
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(8) << "Method" << setw(16) << "Num of f" << endl;
+	cout << setw(8) << "Method" << setw(16) << "Times of f" << endl;
 	cout << setw(8) << "CD:" << setw(16) << 2 * j << endl;
 	cout << "********************************************" << endl;
 }
@@ -121,7 +121,7 @@ void BackwardDifference(vector<double> Ma) {
 		}
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(8) << "Method" << setw(16) << "Num of f" << endl;
+	cout << setw(8) << "Method" << setw(16) << "Times of f" << endl;
 	cout << setw(8) << "BD:" << setw(16) << j << endl;
 	cout << "********************************************" << endl;
 }
@@ -171,7 +171,7 @@ void CFD(vector<double> Ma) {
 		}
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(8) << "Method" << setw(16) << "Num of f" << setw(18) << "Num of f(x-dx)" << endl;
+	cout << setw(8) << "Method" << setw(16) << "Times of f" << setw(18) << "Times of f(x-dx)" << endl;
 	cout << setw(8) << "CFD:" << setw(16) << 2 * j << setw(18) << sumB << endl;
 	cout << "********************************************" << endl;
 }
@@ -223,7 +223,7 @@ void BFD(vector<double> Ma) {
 		}
 		cout << setw(8) << dx * i << setw(16) << Ma[i] << setw(18) << temp << endl;
 	}
-	cout << setw(8) << "Method" << setw(16) << "Num of f" << setw(18) << "Num of f(x-dx)" << setw(18) << "Num of f(x+dx)" << endl;
+	cout << setw(8) << "Method" << setw(16) << "Times of f" << setw(18) << "Times of f(x-dx)" << setw(18) << "Times of f(x+dx)" << endl;
 	cout << setw(8) << "BFD:" << setw(16) << j + k << setw(18) << sumB << setw(18) << k << endl;
 	cout << "********************************************" << endl;
 }
