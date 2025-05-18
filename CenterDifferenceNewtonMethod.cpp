@@ -11,7 +11,7 @@ const double L = 3;//nozzle length
 const int N = 31;//Number of discrete points
 const double dx = L / (N - 1);//Discrete distance
 const double residual = 1e-13;//Iterative accuracy
-const double stepL = 0.5;//Initial step size
+const double stepL = 0.01;//Initial step size
 const double IMa = 0;//Initial value
 
 //Laval nozzle formula
@@ -69,7 +69,10 @@ void CenterDifference(vector<double> Ma) {
 		double temp = f(i, Ma[i]);
 		double temp_b, temp_f;
 		double dMa = stepL;
-		temp_b = f(i, Ma[i] - dMa);
+		if (abs(temp) > residual)
+		{
+			temp_b = f(i, Ma[i] - dMa);
+		}
 		//Iterative solution
 		while (abs(temp) > residual) {
 			temp_f = f(i, Ma[i] + dMa);
@@ -102,7 +105,10 @@ void BackwardDifference(vector<double> Ma) {
 		double temp = f(i, Ma[i]);
 		double temp_b;
 		double dMa = stepL;
-		temp_b = f(i, Ma[i] - dMa);
+		if (abs(temp) > residual)
+		{
+			temp_b = f(i, Ma[i] - dMa);
+		}
 		//Iterative solution
 		while (abs(temp) > residual) {
 			dMa = -temp * dMa / (temp - temp_b);
@@ -128,23 +134,22 @@ void BackwardDifference(vector<double> Ma) {
 
 void CFD(vector<double> Ma) {
 	int j = 0;//The number of times the iterative process calculates the function(f)
-	int maxB;
+	int maxB = 0;
 	int sumB = 0;
 	cout << "********************************************" << endl;
 	for (int i = 0; i < N; i++)
 	{
 		double temp = f(i, Ma[i]);
-		maxB = 0;
+		double temp_b, temp_f;
+		double dMa = stepL;
 		if (abs(temp) > residual)
 		{
 			maxB = static_cast<int>(std::round(log(abs(temp)) - log(residual)));//|temp|/e^(maxB)=residual
-			maxB = static_cast<int>(std::round(0.5 * pow(1 + 8 * maxB, 0.5) - 0.5));//|temp|/e^[(1+maxB)maxB/2]=residual
+			maxB = static_cast<int>(std::round(0.5 * pow(1 + 8 * maxB, 0.5) - 0.5));//|temp|/e^[(1+maxB)maxB/2]=residual		
+			sumB += maxB;
+			maxB += j;
+			temp_b = f(i, Ma[i] - dMa);
 		}
-		sumB += maxB;
-		maxB += j;
-		double temp_b, temp_f;
-		double dMa = stepL;
-		temp_b = f(i, Ma[i] - dMa);
 		//Iterative solution
 		while (abs(temp) > residual) {
 			temp_f = f(i, Ma[i] + dMa);
@@ -179,23 +184,23 @@ void CFD(vector<double> Ma) {
 void BFD(vector<double> Ma) {
 	int j = 0;//The number of times the iterative process calculates the function(f)
 	int k = 0;
-	int maxB;
+	int maxB = 0;
 	int sumB = 0;
 	cout << "********************************************" << endl;
 	for (int i = 0; i < N; i++)
 	{
 		double temp = f(i, Ma[i]);
-		maxB = 0;
+		double temp_b;
+		double dMa = stepL;
 		if (abs(temp) > residual)
 		{
 			maxB = static_cast<int>(std::round(log(abs(temp)) - log(residual)));//|temp|/e^(maxB)=residual
 			maxB = static_cast<int>(std::round(0.5 * pow(1 + 8 * maxB, 0.5) - 0.5));//|temp|/e^[(1+maxB)maxB/2]=residual
+
+			sumB += maxB;
+			maxB += j;
+			temp_b = f(i, Ma[i] - dMa);
 		}
-		sumB += maxB;
-		maxB += j;
-		double temp_b;
-		double dMa = stepL;
-		temp_b = f(i, Ma[i] - dMa);
 		//Iterative solution
 		while (abs(temp) > residual) {
 			if (j < maxB)
